@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import BASE_URL from "../api/config";
 
 export default function Register_complain() {
   const [comments, setComments] = useState("");
@@ -65,7 +66,7 @@ export default function Register_complain() {
   };
 
   const submitComplaint = (uploadedUrl) => {
-    fetch("http://localhost:4000/route/complain", {
+    fetch(`${BASE_URL}/route/complain`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
