@@ -1,15 +1,10 @@
 import React, { useState } from 'react'
 import {Link,useNavigate} from "react-router-dom"
-
 import BASE_URL from '../api/config';
-
-
-
 
 const Register = () => {
 
     const n=useNavigate();
-
 
     const [name,setname]=useState("");
     const[regno,setregno]=useState("");
@@ -20,7 +15,6 @@ const Register = () => {
     const [roomno, setroomno] = useState('');
 
     const validation = (data) => {
-
         console.log("you are in validation data")
         console.log(data)
         const { email, phoneno, password } = data;
@@ -48,9 +42,8 @@ const Register = () => {
       };
       
 
-  const signup_fun=async(e,req,res)=>{
+  const signup_fun=async(e)=>{
     e.preventDefault(); // Prevent page refresh
-
 
     //  validation of data 
     const data = {
@@ -62,9 +55,8 @@ const Register = () => {
         role,
         roomno,
       };
-    //  sendin data to backend 
-      if(validation(data)){
 
+    if(validation(data)){
         console.log({
             name: name,
             regno: regno,
@@ -73,12 +65,12 @@ const Register = () => {
             password: password,
             role: role
           });
-        //   String x=to_
 
         alert("validation done ")
 
-          fetch(`${BASE_URL}/route/signup`,{
-            method:"Post",
+        // 🔹 Updated fetch call (send OTP request instead of direct signup)
+        fetch(`${BASE_URL}/route/signup-request`,{
+            method:"POST",
             headers:{
                 "Content-Type":"application/json"
             },
@@ -90,30 +82,24 @@ const Register = () => {
                 password: password,
                 role: role,
                 roomno:roomno
-
             })
-          }).then(res=>res.json())
-          .then((d) => {
+        })
+        .then(res=>res.json())
+        .then((d) => {
             if (d.success) {
-            // Only redirect if registration succeeded
-            alert(d.message);
-             n("/login");
-           } else {
-  // Show error message, no redirection
-             alert(d.message);
-}
-          })
- 
-        
+              alert("✅ OTP sent to your email. Please verify.");
+              localStorage.setItem("pendingEmail", email); // ✅ store email for OTP page
+              n("/verify-otp"); // ✅ redirect to OTP page
+            } else {
+              alert(d.message);
+            }
+        })
+        .catch(err => {
+          console.error("Signup error:", err);
+          alert("Something went wrong. Try again.");
+        });
       }
-      
-
   }
-
-
-
-
-
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
@@ -244,6 +230,5 @@ const Register = () => {
 </div>
   )
 }
-
 
 export default Register

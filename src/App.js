@@ -17,6 +17,7 @@ import AllComplain from "./pages/AllComplain";
 import AllstudentDetail from "./pages/AllstudentDetail";
 import Add_annoucement from "./components/Add_annoucement";
 import Show_Notice from "./components/Show_Notice";
+import VerifyOtp from "./pages/VerifyOtp";
 
 
 
@@ -62,6 +63,7 @@ function App() {
           <Route path="/allstudent_details" element={<AllstudentDetail/>} />
           <Route path="/addannoucement" element={<Add_annoucement/>} />
           <Route path="/allnotice" element={<Show_Notice/>} />
+          <Route path="/verify-otp" element={<VerifyOtp/>} />
          </Routes>
       </div>
 
